@@ -20,7 +20,7 @@ pipeline {
                          <p>Check Jenkins for full console output: 
                          <a href="${env.BUILD_URL}console">${env.BUILD_URL}console</a></p>""",
                 mimeType: 'text/html',
-                to: 'anandkumard@gmail.com'
+                to: 'anandkumard1553@gmail.com'
             )
         }
     }
