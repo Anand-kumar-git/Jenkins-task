@@ -6,7 +6,7 @@ pipeline {
             steps {
                 sh '''
                     chmod +x script.sh
-                    ./script.sh
+                    ./script.sh > output.log 2>&1
                 '''
             }
         }
@@ -14,19 +14,14 @@ pipeline {
 
     post {
         always {
-            script {
-                def log = currentBuild.rawBuild.getLog(1000).join('\n')
-                emailext (
-                    subject: "Jenkins Build Log: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                    body: """
-                        <h2>Build Result: ${currentBuild.currentResult}</h2>
-                        <p>Build Number: ${env.BUILD_NUMBER}</p>
-                        <pre>${log}</pre>
-                    """,
-                    mimeType: 'text/html',
-                    to: 'anandkumard1553@gmail.com'
-                )
-            }
+            emailext (
+                subject: "Jenkins Build: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+                body: """<p>Build Result: ${currentBuild.currentResult}</p>
+                         <p>Check Jenkins for full console output: 
+                         <a href="${env.BUILD_URL}console">${env.BUILD_URL}console</a></p>""",
+                mimeType: 'text/html',
+                to: 'anandkumard@gmail.com'
+            )
         }
     }
 }
